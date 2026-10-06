@@ -1,0 +1,23 @@
+# Large raw data
+data/exprMatrix.tsv.gz.tmp
+
+# Seurat objects
+objects/*.rds
+
+# Temporary R files
+.Rhistory
+.RData
+.Ruserdata
+
+# RStudio
+.Rproj.user/
+
+# System files
+.DS_Store
+
+# Temporary/log files
+*.log
+*.tmp
+
+# Installation archives
+*.tar.gz

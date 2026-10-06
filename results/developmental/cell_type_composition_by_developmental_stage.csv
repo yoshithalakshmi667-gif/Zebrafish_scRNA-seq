@@ -1,0 +1,97 @@
+"CellType","DevelopmentalStage","CellCount","Percentage"
+"Basal epithelial cells","1dpf",580,2.5840944531076
+"Cardiac / slow skeletal muscle cells","1dpf",323,1.43907329026509
+"Cephalic skeletal muscle cells","1dpf",1,0.00445533526397861
+"Chondrocytes / cartilage cells","1dpf",0,0
+"Ciliated / otic epithelial cells","1dpf",280,1.24749387391401
+"Endothelial cells","1dpf",290,1.2920472265538
+"Epidermal epithelial cells","1dpf",2,0.00891067052795723
+"Erythrocytes","1dpf",32,0.142570728447316
+"Erythroid cells","1dpf",520,2.31677433726888
+"Erythroid progenitor cells","1dpf",7,0.0311873468478503
+"Fast skeletal muscle cells","1dpf",7,0.0311873468478503
+"Fibroblast / ECM cells","1dpf",604,2.69102249944308
+"Gill / ion-transporting epithelial cells","1dpf",0,0
+"Hepatic cells","1dpf",0,0
+"Intestinal epithelial cells","1dpf",228,1.01581644018712
+"Ion-transporting / pharyngeal epithelial cells","1dpf",721,3.21229672532858
+"Lens cells","1dpf",215,0.957897081755402
+"Macrophages / immune cells","1dpf",127,0.565827578525284
+"Melanocytes / pigment cells","1dpf",404,1.79995544664736
+"Mucosal / olfactory epithelial cells","1dpf",416,1.8534194698151
+"Myogenic progenitor cells","1dpf",273,1.21630652706616
+"Neural / glial cells","1dpf",2,0.00891067052795723
+"Neural crest / mesenchymal cells","1dpf",2250,10.0245043439519
+"Neural progenitor cells","1dpf",11156,49.7037202049454
+"Neurogenic progenitor cells","1dpf",1261,5.61817776787703
+"Neurons","1dpf",1363,6.07262196480285
+"Notochord cells","1dpf",117,0.521274225885498
+"Pancreatic acinar cells","1dpf",0,0
+"Perivascular / cranial mesenchymal cells","1dpf",0,0
+"Perivascular cells","1dpf",753,3.3548674537759
+"Photoreceptors","1dpf",11,0.0490086879037648
+"Skeletal muscle cells","1dpf",502,2.23657830251726
+"Basal epithelial cells","2dpf",488,4.13034278459585
+"Cardiac / slow skeletal muscle cells","2dpf",62,0.52475666525603
+"Cephalic skeletal muscle cells","2dpf",2,0.0169276343630978
+"Chondrocytes / cartilage cells","2dpf",0,0
+"Ciliated / otic epithelial cells","2dpf",112,0.947947524333474
+"Endothelial cells","2dpf",96,0.812526449428692
+"Epidermal epithelial cells","2dpf",2,0.0169276343630978
+"Erythrocytes","2dpf",946,8.00677105374524
+"Erythroid cells","2dpf",1,0.00846381718154888
+"Erythroid progenitor cells","2dpf",19,0.160812526449429
+"Fast skeletal muscle cells","2dpf",341,2.88616165890817
+"Fibroblast / ECM cells","2dpf",1499,12.6872619551418
+"Gill / ion-transporting epithelial cells","2dpf",1,0.00846381718154888
+"Hepatic cells","2dpf",0,0
+"Intestinal epithelial cells","2dpf",88,0.744815911976301
+"Ion-transporting / pharyngeal epithelial cells","2dpf",204,1.72661870503597
+"Lens cells","2dpf",71,0.60093101988997
+"Macrophages / immune cells","2dpf",104,0.880236986881083
+"Melanocytes / pigment cells","2dpf",220,1.86203977994075
+"Mucosal / olfactory epithelial cells","2dpf",103,0.871773169699534
+"Myogenic progenitor cells","2dpf",168,1.42192128650021
+"Neural / glial cells","2dpf",3,0.0253914515446466
+"Neural crest / mesenchymal cells","2dpf",1188,10.0550148116801
+"Neural progenitor cells","2dpf",149,1.26110876005078
+"Neurogenic progenitor cells","2dpf",3210,27.1688531527719
+"Neurons","2dpf",1415,11.9763013118917
+"Notochord cells","2dpf",111,0.939483707151926
+"Pancreatic acinar cells","2dpf",0,0
+"Perivascular / cranial mesenchymal cells","2dpf",3,0.0253914515446466
+"Perivascular cells","2dpf",556,4.70588235294118
+"Photoreceptors","2dpf",616,5.21371138383411
+"Skeletal muscle cells","2dpf",37,0.313161235717309
+"Basal epithelial cells","5dpf",0,0
+"Cardiac / slow skeletal muscle cells","5dpf",37,0.403621686484128
+"Cephalic skeletal muscle cells","5dpf",122,1.33086069597469
+"Chondrocytes / cartilage cells","5dpf",408,4.45074724555471
+"Ciliated / otic epithelial cells","5dpf",1,0.0109086942293008
+"Endothelial cells","5dpf",138,1.5053998036435
+"Epidermal epithelial cells","5dpf",1102,12.0213810406894
+"Erythrocytes","5dpf",1,0.0109086942293008
+"Erythroid cells","5dpf",1,0.0109086942293008
+"Erythroid progenitor cells","5dpf",273,2.97807352459911
+"Fast skeletal muscle cells","5dpf",172,1.87629540743973
+"Fibroblast / ECM cells","5dpf",4,0.043634776917203
+"Gill / ion-transporting epithelial cells","5dpf",1124,12.261372313734
+"Hepatic cells","5dpf",432,4.71255590705792
+"Intestinal epithelial cells","5dpf",248,2.70535616886659
+"Ion-transporting / pharyngeal epithelial cells","5dpf",1,0.0109086942293008
+"Lens cells","5dpf",0,0
+"Macrophages / immune cells","5dpf",509,5.55252536271408
+"Melanocytes / pigment cells","5dpf",194,2.11628668048435
+"Mucosal / olfactory epithelial cells","5dpf",34,0.370895603796226
+"Myogenic progenitor cells","5dpf",4,0.043634776917203
+"Neural / glial cells","5dpf",1485,16.1994109305116
+"Neural crest / mesenchymal cells","5dpf",1,0.0109086942293008
+"Neural progenitor cells","5dpf",0,0
+"Neurogenic progenitor cells","5dpf",2,0.0218173884586015
+"Neurons","5dpf",4,0.043634776917203
+"Notochord cells","5dpf",15,0.163630413439511
+"Pancreatic acinar cells","5dpf",70,0.763608596051053
+"Perivascular / cranial mesenchymal cells","5dpf",2550,27.8171702847169
+"Perivascular cells","5dpf",2,0.0218173884586015
+"Photoreceptors","5dpf",233,2.54172575542708
+"Skeletal muscle cells","5dpf",0,0
