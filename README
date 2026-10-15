@@ -1,209 +1,46 @@
+Single-Cell RNA-seq Analysis of Zebrafish Development
+Project Overview
+This project investigates transcriptomic changes during zebrafish development at 1, 2, and 5 days post-fertilization (dpf) using publicly available single-cell RNA-sequencing (scRNA-seq) data from the zebrafish developmental atlas (Farnsworth et al., 2019). The analysis characterizes cellular diversity, developmental changes in cell-type composition, differential gene expression, and enriched biological pathways.
+Dataset and Methods
+- Input: 32,520 genes across 44,020 cells from six samples (two biological replicates per developmental stage).
+- Quality control: Retained cells with 500–6,000 detected genes and ≤10% mitochondrial reads.
+- Processing: Seurat LogNormalize (scale factor 10,000), 2,000 highly variable genes, PCA, graph-based clustering, UMAP, and marker-based cell-type annotation.
+- Developmental comparisons: 1 vs 2 dpf, 2 vs 5 dpf, and 1 vs 5 dpf using Seurat's Wilcoxon test for global single-cell differential expression.
+- Cell-type-specific analysis: Pseudobulk differential expression using edgeR for endothelial cells, intestinal epithelial cells, macrophages/immune cells, and melanocytes/pigment cells.
+- Functional analysis: Gene Ontology (GO Biological Process) and KEGG pathway enrichment.
+Key Results
+Quality Control and Cell Populations
+- 43,427 cells retained after filtering (98.65% of the original 44,020 cells).
+- 32 transcriptional clusters identified and annotated into broad cell populations, including neural progenitors, neurons, epithelial cells, endothelial cells, immune cells, and pigment cells.
+- UMAP and cell-type composition analyses revealed substantial differences in the sampled cell populations across developmental stages.
+Global Developmental Differential Expression
+Comparison	Significant genes
+1 dpf vs 2 dpf	3,262
+2 dpf vs 5 dpf	4,655
+1 dpf vs 5 dpf	5,506
 
-# Zebrafish Developmental Single-Cell RNA-seq Analysis
 
-**Single-cell transcriptomic analysis of zebrafish development at 1, 2, and 5 days post-fertilization (dpf)**
+The greatest number of significant genes occurred between 1 and 5 dpf, indicating pronounced transcriptomic differences between the earliest and latest sampled stages. Because global comparisons combine multiple cell populations, some changes may reflect differences in cell-type composition.
+Cell-Type-Specific Pseudobulk Differential Expression
+Numbers of genes significant at FDR < 0.05:
+Cell type	1 vs 2 dpf	2 vs 5 dpf	1 vs 5 dpf
+Endothelial cells	199	993	2,093
+Intestinal epithelial cells	625	2,602	3,869
+Macrophages / immune cells	78	288	908
+Melanocytes / pigment cells	848	1,851	3,503
 
-This project analyzes a published zebrafish developmental single-cell RNA sequencing (scRNA-seq) dataset to characterize cell populations, compare transcriptional profiles across developmental stages, and investigate cell-type-specific pathways. The analysis was performed in **R** on a Linux computational environment using **Seurat**, **edgeR**, and **clusterProfiler**.
 
-## Project objectives
-
-- Perform quality control and preprocessing of a zebrafish scRNA-seq expression matrix.
-- Identify transcriptionally distinct cell clusters and annotate major cell types.
-- Examine cell-type composition across 1, 2, and 5 dpf.
-- Identify genes associated with developmental-stage differences.
-- Use biological-replicate-aware pseudobulk differential expression in selected cell types.
-- Interpret differential expression using Gene Ontology (GO) and KEGG pathway enrichment.
-
-## Dataset
-
-The analysis uses the zebrafish developmental scRNA-seq atlas published by **Farnsworth, Saunders, and Miller (2019)**. The input comprises a gene-by-cell expression matrix and cell metadata rather than raw FASTQ files.
-
-| Dataset characteristic | Value |
-|---|---:|
-| Initial genes | 32,520 |
-| Initial cells | 44,020 |
-| Cells retained after QC | 43,427 (98.65%) |
-| Developmental stages | 1, 2, and 5 dpf |
-| Biological samples | 6 (two per stage) |
-| Identified Seurat clusters | 32 |
-| Annotated broad cell types | 32 |
-
-**Reference:** Farnsworth, D. R., Saunders, L. M., & Miller, A. C. (2019). *A single-cell transcriptome atlas for zebrafish development*. Developmental Biology, 459(2), 100–108. Please consult the original publication for data provenance, experimental details, and reuse conditions.
-
-## Analysis workflow
-
-### 1. Quality control
-
-Seurat was used to calculate detected genes (`nFeature_RNA`), UMI counts (`nCount_RNA`), and mitochondrial read percentage (`percent.mt`). The applied filters were:
-
-| Metric | Retention criterion |
-|---|---|
-| Detected genes per cell | 500–6,000 (inclusive) |
-| Mitochondrial percentage | ≤ 10% |
-
-Mitochondrial features were identified using the gene-name pattern `^ENSDARG.*-mt-`. **593 cells** were removed, leaving **43,427 cells** for downstream analysis.
-
-### 2. Normalization and feature selection
-
-- `NormalizeData(normalization.method = "LogNormalize", scale.factor = 10000)`
-- `FindVariableFeatures(selection.method = "vst", nfeatures = 2000)`
-- `ScaleData()` on variable features
-- `RunPCA(npcs = 50)`
-
-### 3. Clustering and visualization
-
-- Nearest-neighbor graph: `FindNeighbors(dims = 1:15)`
-- Graph-based clustering: `FindClusters(resolution = 0.5)`
-- UMAP visualization: `RunUMAP(dims = 1:15)`
-- Cluster markers: `FindAllMarkers(only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)`
-- Cluster-to-cell-type annotations were assigned using marker evidence and saved in `final_cluster_annotations.csv`.
-
-### 4. Developmental-stage comparisons
-
-Cells were assigned to stages using sample metadata. Global differential expression was performed using Seurat's Wilcoxon test (`FindMarkers`, `logfc.threshold = 0.25`, `min.pct = 0.10`) for **1 vs 2 dpf**, **2 vs 5 dpf**, and **1 vs 5 dpf**. These cell-level comparisons are exploratory because cells from the same biological sample are not independent replicates, and stage differences may reflect shifts in cell-type composition.
-
-### 5. Cell-type-specific pseudobulk analysis
-
-Raw counts were aggregated by biological sample within four cell types with adequate representation across the six samples:
-
-- Endothelial cells
-- Intestinal epithelial cells
-- Macrophages / immune cells
-- Melanocytes / pigment cells
-
-The pseudobulk count matrix contains **32,520 genes × 24 cell-type/sample combinations**. Differential expression was analyzed with **edgeR** using quasi-likelihood testing, and genes were assessed using a **false discovery rate (FDR) threshold of 0.05**. Each stage has only two biological replicates, so findings should be treated as exploratory.
-
-### 6. Functional enrichment
-
-GO Biological Process and KEGG enrichment were performed using **clusterProfiler** and zebrafish annotation resources (`org.Dr.eg.db`), with the tested gene universe used as background for pseudobulk enrichment analyses.
-
-## Key results
-
-### Global developmental differential expression
-
-The existing significant-gene tables contain the following numbers of reported significant genes:
-
-| Comparison | Significant genes |
-|---|---:|
-| 1 dpf vs 2 dpf | 3,262 |
-| 2 dpf vs 5 dpf | 4,655 |
-| 1 dpf vs 5 dpf | 5,506 |
-
-These global stage-level results should be interpreted in the context of changes in cell-type composition and biological sample structure.
-
-### Pseudobulk differential expression
-
-Number of significant genes (FDR < 0.05):
-
-| Cell type | 1 vs 2 dpf | 2 vs 5 dpf | 1 vs 5 dpf |
-|---|---:|---:|---:|
-| Endothelial cells | 199 | 993 | 2,093 |
-| Intestinal epithelial cells | 625 | 2,602 | 3,869 |
-| Macrophages / immune cells | 78 | 288 | 908 |
-| Melanocytes / pigment cells | 848 | 1,851 | 3,503 |
-
-### Intestinal xenobiotic-metabolism signature
-
-In intestinal epithelial cells, the KEGG pathway **“Metabolism of xenobiotics by cytochrome P450”** was enriched in the **1 dpf vs 5 dpf** pseudobulk comparison (**adjusted p = 1.50 × 10⁻¹⁰**). Of the 46 gene symbols contributing to this enrichment result, 32 were matched to the differential-expression table and visualized in a heatmap of TMM-normalized log-CPM expression. The selected genes generally show higher relative expression at 5 dpf, including members of the **UGT** and **GST** gene families.
-
-This pattern is consistent with developmental remodeling of intestinal xenobiotic-processing gene expression; it **does not establish enzyme activity or pathway activation**.
-
-## Repository structure
-
-```text
-Zebrafish_scRNA-seq/
-├── data/                                  # Input expression matrix and metadata (large files may be excluded)
-├── objects/                               # Intermediate Seurat RDS objects (usually excluded from Git)
-├── plots/                                 # QC, UMAP, composition, DEG and pathway visualizations
-├── results/                               # CSV summaries, DEG results and pathway enrichment
-├── scripts/                               # R scripts for the analysis workflow
-├── celltype_developmental_stage_counts.csv
-├── celltype_stage_replicate_cell_counts.csv
-└── README.md
-```
-
-### Representative scripts
-
-| Script | Purpose |
-|---|---|
-| `04_QC_filtering.R` | Filter low-quality cells |
-| `05_normalization.R` | Log-normalize expression |
-| `06_variable_genes.R` | Select 2,000 highly variable genes |
-| `07_PCA.R` | Scale data and perform PCA |
-| `08_clustering.R` | Construct neighbor graph and cluster cells |
-| `09_UMAP.R` | Generate cluster UMAP |
-| `10_cell_markers.R` | Identify cluster marker genes |
-| `11_cell_annotation.R` | Annotate cell types |
-| `12_check_developmental_stages.R` | Inspect sample and stage metadata |
-| `13_developmental_metadata.R` | Create developmental-stage labels |
-| `14_cell_type_composition.R` | Calculate and plot cell-type composition |
-| `15_developmental_summary.R` | Summarize developmental cell-type proportions |
-| `16_developmental_DEG.R` | Run global stage-level DEG comparisons |
-| `20_pseudobulk_edgeR_DEG.R` | Run cell-type-specific pseudobulk DEG analysis |
-| `21_pseudobulk_pathway_enrichment.R` | Run GO and KEGG enrichment |
-
-**Note:** Script locations and names should be checked against the files currently committed to this repository. The workflow also includes an earlier QC-metrics script and pseudobulk count-aggregation step; their exact filenames are not specified here.
-
-## Running the analysis
-
-1. Clone the repository and enter the project directory:
-
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/Zebrafish_scRNA-seq.git
-   cd Zebrafish_scRNA-seq
-   ```
-
-2. Obtain the original expression matrix and metadata from the source dataset, subject to its distribution terms, and place them under `data/`.
-3. Install the required R packages in your Linux/R environment: **Seurat**, **Matrix**, **dplyr**, **ggplot2**, **edgeR**, **clusterProfiler**, and **org.Dr.eg.db**. Package versions were not locked in this repository.
-4. Review the paths inside the R scripts before execution. Some original scripts use relative paths and expect input `.rds` files in the current working directory; they are **not yet a single automated end-to-end pipeline**.
-5. Run scripts in numerical workflow order, starting with Seurat object creation and QC metrics, then filtering, normalization, clustering, annotation, developmental comparisons, pseudobulk aggregation, DE, and enrichment.
-
-Example for a script whose paths have been configured correctly:
-
-```bash
-Rscript scripts/05_normalization.R
-```
-
-> **Reproducibility note:** Running a script from the repository root does not automatically resolve the relative file paths in all existing scripts. Adjust input/output paths or working directory as needed. The original input matrix, intermediate RDS objects, and complete dependency versions are required for exact reproduction.
-
-## Figures and output files
-
-- QC violin and scatter plots
-- PCA elbow and UMAP cluster plots
-- UMAP colored by developmental stage
-- Cell-type composition plots
-- Global developmental DEG tables
-- Pseudobulk DEG summaries and per-comparison gene tables
-- GO Biological Process and KEGG enrichment results
-- Intestinal epithelial xenobiotic-metabolism heatmap
-
-Selected summary outputs include:
-
-```text
-results/developmental/pseudobulk/DEG/pseudobulk_DEG_summary.csv
-results/developmental/pseudobulk/pathways/pathway_enrichment_summary.csv
-results/developmental/pseudobulk/pathways/intestinal_1dpf_vs_5dpf_cyp_xenobiotic_genes.csv
-plots/developmental/intestinal_xenobiotic_CYP450_heatmap.png
-```
-
-## Limitations
-
-- Only **two biological replicates per developmental stage** were available for pseudobulk comparisons.
-- Global cell-level DEG tests can be influenced by pseudoreplication and differences in cell-type proportions.
-- Cell-type annotations are computational assignments based on marker evidence and may require independent validation.
-- GO/KEGG overrepresentation and heatmap patterns do not directly measure pathway activity.
-- The dataset uses processed expression matrices, so read alignment and primary sequencing QC were outside this project's scope.
-
-## Technologies
-
-**R · Seurat · edgeR · clusterProfiler · org.Dr.eg.db · ggplot2 · Linux · scRNA-seq · Pseudobulk differential expression · GO/KEGG enrichment**
-
-## Author
-
-**Yoshitha Evuri**  
-M.S. Bioinformatics, University of Texas at El Paso (UTEP)  
-[LinkedIn](https://www.linkedin.com/in/yoshitha-evuri) · [GitHub](https://github.com/yoshithalakshmi667-gif)
-
-## Citation and acknowledgment
-
-If using or adapting this analysis, cite the original zebrafish atlas publication and the software used in the workflow. This repository presents a secondary computational analysis of published data, not newly generated sequencing data.
+Pathway Enrichment and Intestinal Development
+GO and KEGG enrichment analyses highlighted developmental differences in metabolism, transport, DNA replication, and other cellular processes. In intestinal epithelial cells, the KEGG xenobiotic metabolism by cytochrome P450 pathway was significantly enriched in the 1 vs 5 dpf comparison (adjusted p = 1.50 × 10⁻¹⁰).
+Of 46 genes listed in the enriched pathway, 32 matched the tested differential-expression results. All 32 showed higher estimated expression at 5 dpf than at 1 dpf, including ugt1a1, gsto1, gsto2, gstt1b, and mgst3a. A heatmap of six intestinal epithelial pseudobulk samples illustrated this developmental expression pattern.
+These findings are consistent with maturation of xenobiotic-processing gene-expression programs; they do not directly establish increased enzyme activity.
+Repository Contents
+- scripts/ — R scripts for QC, normalization, clustering, annotation, differential expression, and enrichment.
+- results/ — DEG tables, cell-type composition summaries, pseudobulk results, and pathway enrichment outputs.
+- plots/ — QC figures, UMAPs, developmental composition plots, and pathway heatmaps.
+- data/ — Input-data directory; large raw matrices may be excluded from version control.
+- objects/ — Intermediate Seurat objects; large .rds files may be excluded from version control.
+Limitations
+The study uses two biological replicates per stage, so pseudobulk differential-expression findings should be considered exploratory. Cell-type proportions may also be affected by sampling and cell recovery. Pathway enrichment indicates statistical overrepresentation, not direct functional activation.
+Reference
+Farnsworth, D. R., Saunders, L. M., & Miller, A. C. (2019). A single-cell transcriptome atlas for zebrafish development. Developmental Biology, 459(2), 100–108.
