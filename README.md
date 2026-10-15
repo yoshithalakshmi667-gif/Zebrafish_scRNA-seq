@@ -1,0 +1,58 @@
+# Single-Cell RNA-seq Analysis of Zebrafish Development
+
+## Project Overview
+This project investigates transcriptomic changes during zebrafish development at **1, 2, and 5 days post-fertilization (dpf)** using publicly available single-cell RNA-sequencing (scRNA-seq) data from the zebrafish developmental atlas (Farnsworth et al., 2019). The analysis characterizes cellular diversity, developmental changes in cell-type composition, differential gene expression, and enriched biological pathways.
+
+## Dataset and Methods
+- **Input:** 32,520 genes across 44,020 cells from six samples (two biological replicates per developmental stage).
+- **Quality control:** Retained cells with 500–6,000 detected genes and ≤10% mitochondrial reads.
+- **Processing:** Seurat LogNormalize (scale factor 10,000), 2,000 highly variable genes, PCA, graph-based clustering, UMAP, and marker-based cell-type annotation.
+- **Developmental comparisons:** 1 vs 2 dpf, 2 vs 5 dpf, and 1 vs 5 dpf using Seurat's Wilcoxon test for global single-cell differential expression.
+- **Cell-type-specific analysis:** Pseudobulk differential expression using edgeR for endothelial cells, intestinal epithelial cells, macrophages/immune cells, and melanocytes/pigment cells.
+- **Functional analysis:** Gene Ontology (GO Biological Process) and KEGG pathway enrichment.
+
+## Key Results
+
+### Quality Control and Cell Populations
+- **43,427 cells retained** after filtering (98.65% of the original 44,020 cells).
+- **32 transcriptional clusters** identified and annotated into broad cell populations, including neural progenitors, neurons, epithelial cells, endothelial cells, immune cells, and pigment cells.
+- UMAP and cell-type composition analyses revealed substantial differences in the sampled cell populations across developmental stages.
+
+### Global Developmental Differential Expression
+| Comparison | Significant genes |
+|---|---:|
+| 1 dpf vs 2 dpf | 3,262 |
+| 2 dpf vs 5 dpf | 4,655 |
+| 1 dpf vs 5 dpf | 5,506 |
+
+The greatest number of significant genes occurred between **1 and 5 dpf**, indicating pronounced transcriptomic differences between the earliest and latest sampled stages. Because global comparisons combine multiple cell populations, some changes may reflect differences in cell-type composition.
+
+### Cell-Type-Specific Pseudobulk Differential Expression
+Numbers of genes significant at **FDR < 0.05**:
+
+| Cell type | 1 vs 2 dpf | 2 vs 5 dpf | 1 vs 5 dpf |
+|---|---:|---:|---:|
+| Endothelial cells | 199 | 993 | 2,093 |
+| Intestinal epithelial cells | 625 | 2,602 | 3,869 |
+| Macrophages / immune cells | 78 | 288 | 908 |
+| Melanocytes / pigment cells | 848 | 1,851 | 3,503 |
+
+### Pathway Enrichment and Intestinal Development
+GO and KEGG enrichment analyses highlighted developmental differences in metabolism, transport, DNA replication, and other cellular processes. In intestinal epithelial cells, the **KEGG xenobiotic metabolism by cytochrome P450 pathway** was significantly enriched in the **1 vs 5 dpf** comparison (**adjusted p = 1.50 × 10⁻¹⁰**).
+
+Of 46 genes listed in the enriched pathway, **32 matched the tested differential-expression results**. All 32 showed higher estimated expression at **5 dpf** than at **1 dpf**, including *ugt1a1*, *gsto1*, *gsto2*, *gstt1b*, and *mgst3a*. A heatmap of six intestinal epithelial pseudobulk samples illustrated this developmental expression pattern.
+
+These findings are consistent with maturation of xenobiotic-processing gene-expression programs; they do not directly establish increased enzyme activity.
+
+## Repository Contents
+- `scripts/` — R scripts for QC, normalization, clustering, annotation, differential expression, and enrichment.
+- `results/` — DEG tables, cell-type composition summaries, pseudobulk results, and pathway enrichment outputs.
+- `plots/` — QC figures, UMAPs, developmental composition plots, and pathway heatmaps.
+- `data/` — Input-data directory; large raw matrices may be excluded from version control.
+- `objects/` — Intermediate Seurat objects; large `.rds` files may be excluded from version control.
+
+## Limitations
+The study uses **two biological replicates per stage**, so pseudobulk differential-expression findings should be considered exploratory. Cell-type proportions may also be affected by sampling and cell recovery. Pathway enrichment indicates statistical overrepresentation, not direct functional activation.
+
+## Reference
+Farnsworth, D. R., Saunders, L. M., & Miller, A. C. (2019). *A single-cell transcriptome atlas for zebrafish development*. Developmental Biology, 459(2), 100–108.
